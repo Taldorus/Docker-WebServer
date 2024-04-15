@@ -1,5 +1,5 @@
 # Download base image
-FROM php:8.2-cli
+FROM php:8.3.6-alpine3.19
 
 # About the custom image
 LABEL maintainer="bsm.courrier@gmail.com"
