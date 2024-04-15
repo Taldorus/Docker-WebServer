@@ -32,7 +32,7 @@ services:
     expose:
       - 3306    
     environment:
-      MYSQL_DATABASE: mysql
+      MYSQL_DATABASE: dbu
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: dbuserpassword
       MYSQL_ROOT_PASSWORD: rootpassword
@@ -44,15 +44,16 @@ services:
       - backend
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    links: 
-      - mysql:mysql
+    image: phpmyadmin:fpm-alpine
+    restart: always
     ports:
       - 8000:80
     environment:
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: dbuserpassword
       MYSQL_ROOT_PASSWORD: rootpassword
+      PMA_HOST : 172.17.0.1
+      PMA_PORT : 3306
       
 networks:
   frontend:
