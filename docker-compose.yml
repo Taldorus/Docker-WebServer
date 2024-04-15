@@ -54,6 +54,8 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       PMA_HOST : 172.17.0.1
       PMA_PORT : 3306
+    networks:
+      - backend
       
 networks:
   frontend:
