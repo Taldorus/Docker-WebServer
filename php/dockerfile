@@ -33,5 +33,5 @@ USER app:app
 # Sets the working directory for CMD
 WORKDIR /var/www/html
 
-# Execute php
-CMD php
+# Start PHP
+CMD ["php", "-v"]
