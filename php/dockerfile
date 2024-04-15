@@ -1,10 +1,10 @@
-# Download base image alpine 3.17
-FROM php:8.1-fpm-alpine3.17
+# Download base image
+FROM php:8.2-cli
 
 # About the custom image
 LABEL maintainer="bsm.courrier@gmail.com"
 LABEL version="1.0"
-LABEL description="Docker Image for php8.1-fpm"
+LABEL description="Docker Image for php8.2"
 
 # Copy file form "install-php-extensions" url to local path "/usr/local/bin/"
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
@@ -14,9 +14,6 @@ RUN chmod +x /usr/local/bin/install-php-extensions
 
 # Install php extensions
 RUN install-php-extensions gd zip pdo_mysql
-
-# Copie config file
-#COPY ./conf/php-fpm.conf /usr/local/etc/php-fpm.conf
 
 # Create "app" group
 RUN addgroup -g 1000 app
@@ -30,14 +27,11 @@ RUN mkdir -p /var/www/html /var/log/php
 # Set file user & group "app:app" as owner of directory's "/var/www" & "/usr/local/etc/php/conf.d" & "/var/log/php"
 RUN chown -R app:app /var/www /usr/local/etc/php/conf.d /var/log/php
 
-# Listens on the specified network port
-EXPOSE 9000
-
 # specify the user name and group for CMD
 USER app:app
 
 # Sets the working directory for CMD
 WORKDIR /var/www/html
 
-# Execute php-fpm
-CMD php-fpm
+# Execute php
+CMD php
