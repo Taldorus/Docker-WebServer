@@ -1,13 +1,10 @@
-# Download base image alpine 3.17
-FROM httpd:alpine3.17
+# Download base image alpine 3.19
+FROM httpd:alpine3.19
 
 # About the custom image
 LABEL maintainer="bsm.courrier@gmail.com"
 LABEL version="1.0"
-LABEL description="Docker Image for php8.1-fpm"
-
-# Copy apache config file "httpd.conf" to "/usr/local/apache2/conf/httpd.conf"
-COPY ./httpd.conf /usr/local/apache2/conf/httpd.conf
+LABEL description="Docker Image for php8.1"
 
 # Create "app" group
 RUN addgroup -g 1000 app
@@ -22,7 +19,7 @@ RUN mkdir -p /var/www/html
 RUN chown -R app:app /var/www /usr/local/apache2/logs
 
 # Listens on the specified network port
-EXPOSE 80 443
+#EXPOSE 80 443
 
 # specify the user name and group for CMD
 USER app:app
