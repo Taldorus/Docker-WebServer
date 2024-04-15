@@ -42,6 +42,17 @@ services:
       - /volumes/mysql/:/var/lib/mysql/ 
     networks:
       - backend
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links: 
+      - mysql:mysql
+    ports:
+      - 8000:80
+    environment:
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbuserpassword
+      MYSQL_ROOT_PASSWORD: rootpassword
       
 networks:
   frontend:
