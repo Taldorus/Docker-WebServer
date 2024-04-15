@@ -3,20 +3,20 @@ services:
 
   apache:
     build: './apache/'
-    #restart: always
+    restart: always
     container_name: apache
     ports:
       - 80:8000
-      - 443:443
+      #- 443:443
     volumes:
       - ./volumes/www/:/var/www/html
     networks:
       - frontend
       - backend
-
+      
   php:
     build: './php/'
-    #restart: always
+    restart: always
     container_name: php
     expose:
       - 9000
