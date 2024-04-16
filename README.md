@@ -28,20 +28,18 @@ PASSWORD : dbworkerpassword
 sudo nano /Host/volume/index.php
 UPDATE @IP = (Get it from portainer the wdsn-mysql container ip)
 
-<?php
-    $servername = '@IP';
-    $dbname = 'dbu';
-    $username = 'dbworker';
-    $password = 'dbworkerpassword';
-    try{
-        $conn = new PDO("mysql:host=$servername;dbname=$dbname;port=3306", $username, $password);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        echo 'Connexion réussie';
-    }
-    catch(PDOException $e){
-        echo "Erreur : " . $e->getMessage();
-    }
-?>
+$servername = '@IP';
+$dbname = 'dbu';
+$username = 'dbworker';
+$password = 'dbworkerpassword';
+try{
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname;port=3306", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo 'Connexion réussie';
+}
+catch(PDOException $e){
+    echo "Erreur : " . $e->getMessage();
+}
 
 # RESTART CONTAINER
 Restart wdsn-apache2-php container
