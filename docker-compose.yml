@@ -2,61 +2,54 @@ version: '3.9'
 services:
 
   apache:
-    build: './apache/'
-    restart: always
-    container_name: apache
+    build: './apache2-php/'
+    restart: unless-stopped
+    container_name: wds-apache2-php
     ports:
       - 80:8000
-      #- 443:443
+      - 443:443
     volumes:
       - ./volumes/www/:/var/www/html
+      - ./volumes/apache2/sites-available/:/etc/apache2/sites-available
+      - ./volumes/apache2/sites-enabled/:/etc/apache2/sites-enabled
     networks:
-      - frontend
-      - backend
-      
-  php:
-    build: './php/'
-    restart: always
-    container_name: php
-    expose:
-      - 9000
-    volumes:
-      - ./volumes/www/:/var/www/html
-    networks:
-      - backend
+      - wds_network
 
   mysql:
     build: './mysql/'
-    restart: always
-    container_name: mysql
+    restart: unless-stopped
+    container_name: wds-mysql
     expose:
       - 3306    
     environment:
-      MYSQL_DATABASE: dbu
+      MYSQL_DATABASE: mysql
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: dbuserpassword
       MYSQL_ROOT_PASSWORD: rootpassword
     ports:
       - 3306:3306   
     volumes:
-      - /volumes/mysql/:/var/lib/mysql/ 
+      - ./volumes/mysql/:/var/lib/mysql/ 
     networks:
-      - backend
+      - wds_network
 
   phpmyadmin:
-    image: phpmyadmin:fpm-alpine
-    restart: always
+    image: phpmyadmin:latest
+    restart: unless-stopped
+    container_name: wds-phpmyadmin    
+    links: 
+      - mysql
     ports:
       - 8000:80
     environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1    
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: dbuserpassword
       MYSQL_ROOT_PASSWORD: rootpassword
-      PMA_HOST : 172.17.0.1
-      PMA_PORT : 3306
     networks:
-      - backend
+      - wds_network  
       
 networks:
-  frontend:
-  backend:
+  wds_network:
