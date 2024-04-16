@@ -1,10 +1,10 @@
 version: '3.9'
 services:
 
-  apache:
+  wdsn-apache2-php:
     build: './apache2-php/'
     restart: unless-stopped
-    container_name: wds-apache2-php
+    container_name: wdsn-apache2-php
     ports:
       - 80:8000
       - 443:443
@@ -13,12 +13,12 @@ services:
       - ./volumes/apache2/sites-available/:/etc/apache2/sites-available
       - ./volumes/apache2/sites-enabled/:/etc/apache2/sites-enabled
     networks:
-      - wds_network
+      - wdsn_network
 
-  mysql:
+  wdsn-mysql:
     build: './mysql/'
     restart: unless-stopped
-    container_name: wds-mysql
+    container_name: wdsn-mysql
     expose:
       - 3306    
     environment:
@@ -31,25 +31,25 @@ services:
     volumes:
       - ./volumes/mysql/:/var/lib/mysql/ 
     networks:
-      - wds_network
+      - wdsn_network
 
-  phpmyadmin:
+  wdsn-phpmyadmin:
     image: phpmyadmin:latest
     restart: unless-stopped
-    container_name: wds-phpmyadmin    
+    container_name: wdsn-phpmyadmin    
     links: 
-      - mysql
+      - wdsn-mysql
     ports:
       - 8000:80
     environment:
-      PMA_HOST: mysql
+      PMA_HOST: wdsn-mysql
       PMA_PORT: 3306
       PMA_ARBITRARY: 1    
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: dbuserpassword
       MYSQL_ROOT_PASSWORD: rootpassword
     networks:
-      - wds_network  
+      - wdsn_network  
       
 networks:
-  wds_network:
+  wdsn_network:
